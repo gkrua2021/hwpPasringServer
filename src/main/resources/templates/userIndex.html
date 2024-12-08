@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+</head>
+<body>
+<h1>Login</h1>
+<form id="loginForm">
+    <label for="loginId">Login ID:</label>
+    <input type="text" id="loginId" name="loginId" required>
+    <br><br>
+    <label for="loginPw">Password:</label>
+    <input type="password" id="loginPw" name="loginPw" required>
+    <br><br>
+    <button type="submit">Login</button>
+</form>
+
+<p id="response"></p>
+
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const responseParagraph = document.getElementById('response');
+
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const loginId = document.getElementById('loginId').value;
+        const loginPw = document.getElementById('loginPw').value;
+
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: loginId,
+                    userPw: loginPw,
+                }),
+            });
+
+            // 응답 처리
+            const result = await response.json();
+            if (response.ok) {
+                responseParagraph.textContent = `Login successful: ${JSON.stringify(result)}`;
+            } else {
+                responseParagraph.textContent = `Login failed: ${JSON.stringify(result)}`;
+            }
+        } catch (error) {
+            responseParagraph.textContent = 'An error occurred: ' + error.message;
+        }
+    });
+</script>
+
+</body>
+</html>
