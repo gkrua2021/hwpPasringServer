@@ -24,7 +24,7 @@ public class AuthController {
         Map<String, Object> response = new HashMap<>();
 
         boolean isAuthenticated = userService.authUser(userDomain);
-
+        System.out.println("!!");
         if (isAuthenticated) {
             response.put("status", "success");
             response.put("message", "Authentication successful");

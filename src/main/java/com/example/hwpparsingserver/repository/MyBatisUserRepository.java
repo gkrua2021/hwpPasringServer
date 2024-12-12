@@ -4,6 +4,6 @@ import com.example.hwpparsingserver.domain.UserDomain;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface UserRepository {
+public interface MyBatisUserRepository {
     UserDomain AuthUser(UserDomain userDomain);
 }
