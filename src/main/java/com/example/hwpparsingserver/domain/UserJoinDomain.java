@@ -23,6 +23,15 @@ public class UserJoinDomain {
     @Column(nullable = false, unique = true)
     private String email;
 
+    // 생성자
+    public UserJoinDomain(String userId, String userPw) {
+        this.userId = userId;
+        this.userPw = userPw;
+    }
+
+    // 기본 생성자
+    public UserJoinDomain() {}
+
     // Getters and Setters
     public Long getId() {
         return id;

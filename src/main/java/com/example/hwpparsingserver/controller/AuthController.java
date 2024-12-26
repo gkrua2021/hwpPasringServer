@@ -1,12 +1,9 @@
 package com.example.hwpparsingserver.controller;
 
-
-import com.example.hwpparsingserver.domain.UserDomain;
 import com.example.hwpparsingserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,15 +13,22 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    UserService userService;
-
+    private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UserDomain userDomain) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> requestBody) {
         Map<String, Object> response = new HashMap<>();
+        String userId = requestBody.get("userId");
+        String userPw = requestBody.get("userPw");
 
-        boolean isAuthenticated = userService.authUser(userDomain);
-        System.out.println("!!");
+        if (userId == null || userPw == null) {
+            response.put("status", "failure");
+            response.put("message", "Required parameters are missing.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        System.out.println(userId);
+        System.out.println(userPw);
+        boolean isAuthenticated = userService.authUserWithJPA(userId, userPw);
         if (isAuthenticated) {
             response.put("status", "success");
             response.put("message", "Authentication successful");
@@ -35,5 +39,4 @@ public class AuthController {
 
         return ResponseEntity.ok(response);
     }
-
 }
